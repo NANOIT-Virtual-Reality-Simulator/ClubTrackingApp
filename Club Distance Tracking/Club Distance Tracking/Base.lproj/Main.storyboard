@@ -83,13 +83,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Recorded" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HaI-bc-5bc">
-                                <rect key="frame" x="20" y="175" width="280" height="21"/>
+                                <rect key="frame" x="20" y="146" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8bV-2L-K7I">
-                                <rect key="frame" x="20" y="204" width="132" height="30"/>
+                                <rect key="frame" x="20" y="175" width="132" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Start">
                                     <color key="titleColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -100,7 +100,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OgQ-W5-8P0">
-                                <rect key="frame" x="160" y="204" width="140" height="30"/>
+                                <rect key="frame" x="160" y="175" width="140" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="End">
                                     <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -110,11 +110,17 @@
                                     <action selector="endClicked:" destination="FOV-yC-esg" eventType="touchUpInside" id="LH2-9e-beI"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zLW-JM-miK" customClass="GMSMapView">
+                                <rect key="frame" x="20" y="213" width="280" height="335"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="TKD-Qn-0bT"/>
                     <connections>
+                        <outlet property="MapView" destination="zLW-JM-miK" id="FAQ-Ki-o1S"/>
                         <outlet property="attemptedDistance" destination="HaI-bc-5bc" id="Dy3-Nt-Ycl"/>
                         <outlet property="club" destination="fsW-RE-NXK" id="2ht-1K-Pwf"/>
                         <outlet property="distance" destination="68c-FW-oCo" id="LQd-PY-Eqn"/>

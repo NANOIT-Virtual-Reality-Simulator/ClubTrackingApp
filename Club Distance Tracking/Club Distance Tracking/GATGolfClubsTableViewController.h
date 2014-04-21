@@ -12,5 +12,6 @@
 
 @property (strong, nonatomic) NSMutableArray *globalsArray;
 
+
 - (IBAction)addClub:(id)sender;
 @end

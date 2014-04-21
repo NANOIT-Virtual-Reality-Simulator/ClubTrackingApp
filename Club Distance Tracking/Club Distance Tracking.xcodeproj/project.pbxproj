@@ -10,7 +10,6 @@
 		880BEE5118FB8B6300CB6556 /* GATGolfClubsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 880BEE5018FB8B6300CB6556 /* GATGolfClubsTableViewController.m */; };
 		880BEE5418FB8C8000CB6556 /* GATClubDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 880BEE5318FB8C8000CB6556 /* GATClubDetailViewController.m */; };
 		8840058518FB8F3800BF10EB /* Clubs.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8840058418FB8F3800BF10EB /* Clubs.plist */; };
-		8840058718FB967400BF10EB /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8840058618FB967400BF10EB /* GoogleMaps.framework */; };
 		8840058918FB96A400BF10EB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8840058818FB96A400BF10EB /* AVFoundation.framework */; };
 		8840058B18FB96AA00BF10EB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8840058A18FB96AA00BF10EB /* CoreData.framework */; };
 		8840058D18FB96B500BF10EB /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8840058C18FB96B500BF10EB /* CoreLocation.framework */; };
@@ -35,6 +34,8 @@
 		887E795118F131B50056A87B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 887E793318F131B50056A87B /* UIKit.framework */; };
 		887E795918F131B50056A87B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 887E795718F131B50056A87B /* InfoPlist.strings */; };
 		887E795B18F131B50056A87B /* Club_Distance_TrackingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 887E795A18F131B50056A87B /* Club_Distance_TrackingTests.m */; };
+		88CD72B8190453690001636B /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88CD72B7190453690001636B /* GoogleMaps.framework */; };
+		88CD72BA1904537A0001636B /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 88CD72B91904537A0001636B /* GoogleMaps.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,7 +54,6 @@
 		880BEE5218FB8C8000CB6556 /* GATClubDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GATClubDetailViewController.h; sourceTree = "<group>"; };
 		880BEE5318FB8C8000CB6556 /* GATClubDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GATClubDetailViewController.m; sourceTree = "<group>"; };
 		8840058418FB8F3800BF10EB /* Clubs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Clubs.plist; sourceTree = "<group>"; };
-		8840058618FB967400BF10EB /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMaps.framework; path = "../../../Downloads/GoogleMaps-iOS-1.7.2/GoogleMaps.framework"; sourceTree = "<group>"; };
 		8840058818FB96A400BF10EB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		8840058A18FB96AA00BF10EB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8840058C18FB96B500BF10EB /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -82,6 +82,8 @@
 		887E795618F131B50056A87B /* Club Distance TrackingTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Club Distance TrackingTests-Info.plist"; sourceTree = "<group>"; };
 		887E795818F131B50056A87B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		887E795A18F131B50056A87B /* Club_Distance_TrackingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Club_Distance_TrackingTests.m; sourceTree = "<group>"; };
+		88CD72B7190453690001636B /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
+		88CD72B91904537A0001636B /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +94,7 @@
 				8840059D18FB970500BF10EB /* SystemConfiguration.framework in Frameworks */,
 				8840059B18FB96FA00BF10EB /* QuartzCore.framework in Frameworks */,
 				8840059918FB96F200BF10EB /* OpenGLES.framework in Frameworks */,
+				88CD72B8190453690001636B /* GoogleMaps.framework in Frameworks */,
 				8840059718FB96EA00BF10EB /* libz.dylib in Frameworks */,
 				8840059518FB96E100BF10EB /* libicucore.dylib in Frameworks */,
 				8840059318FB96D500BF10EB /* libc++.dylib in Frameworks */,
@@ -100,7 +103,6 @@
 				8840058D18FB96B500BF10EB /* CoreLocation.framework in Frameworks */,
 				8840058B18FB96AA00BF10EB /* CoreData.framework in Frameworks */,
 				8840058918FB96A400BF10EB /* AVFoundation.framework in Frameworks */,
-				8840058718FB967400BF10EB /* GoogleMaps.framework in Frameworks */,
 				887E793218F131B50056A87B /* CoreGraphics.framework in Frameworks */,
 				887E793418F131B50056A87B /* UIKit.framework in Frameworks */,
 				887E793018F131B50056A87B /* Foundation.framework in Frameworks */,
@@ -142,6 +144,8 @@
 		887E792E18F131B50056A87B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				88CD72B91904537A0001636B /* GoogleMaps.bundle */,
+				88CD72B7190453690001636B /* GoogleMaps.framework */,
 				8840059C18FB970500BF10EB /* SystemConfiguration.framework */,
 				8840059A18FB96FA00BF10EB /* QuartzCore.framework */,
 				8840059818FB96F200BF10EB /* OpenGLES.framework */,
@@ -153,7 +157,6 @@
 				8840058C18FB96B500BF10EB /* CoreLocation.framework */,
 				8840058A18FB96AA00BF10EB /* CoreData.framework */,
 				8840058818FB96A400BF10EB /* AVFoundation.framework */,
-				8840058618FB967400BF10EB /* GoogleMaps.framework */,
 				887E792F18F131B50056A87B /* Foundation.framework */,
 				887E793118F131B50056A87B /* CoreGraphics.framework */,
 				887E793318F131B50056A87B /* UIKit.framework */,
@@ -289,6 +292,7 @@
 				887E793A18F131B50056A87B /* InfoPlist.strings in Resources */,
 				8840058518FB8F3800BF10EB /* Clubs.plist in Resources */,
 				887E794318F131B50056A87B /* Main.storyboard in Resources */,
+				88CD72BA1904537A0001636B /* GoogleMaps.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -437,7 +441,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/jesse/Downloads/GoogleMaps-iOS-1.7.2",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Club Distance Tracking/Club Distance Tracking-Prefix.pch";
@@ -455,7 +459,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/jesse/Downloads/GoogleMaps-iOS-1.7.2",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Club Distance Tracking/Club Distance Tracking-Prefix.pch";

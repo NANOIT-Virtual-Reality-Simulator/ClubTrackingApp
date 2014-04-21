@@ -14,7 +14,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    [GMSServices provideAPIKey:@"AIzaSyDpuvQ9zG3UFKc7pa5XtW-39LMR5gUDfVos"];
+    [GMSServices provideAPIKey:@"AIzaSyDpuvQ9zG3UFKc7pa5XtW-39LMR5gUDfVo"];
     return YES;
 }
 							

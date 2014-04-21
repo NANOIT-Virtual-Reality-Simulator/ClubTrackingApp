@@ -9,11 +9,18 @@
 #import "GATClubDetailViewController.h"
 
 
+
 @interface GATClubDetailViewController ()
+
+
+@property (weak, nonatomic) GMSMapView *mapView;
 
 @end
 
 @implementation GATClubDetailViewController
+{
+    GMSMapView *mapView_;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -55,12 +62,24 @@
 //    _end.layer.borderColor = [[UIColor redColor] CGColor];
 //    _end.layer.cornerRadius = 8;
     
-    self.locationManager = [[CLLocationManager alloc] init]; _locationManager.delegate = self;
+    self.locationManager = [[CLLocationManager alloc] init];
+    _locationManager.delegate = self;
     _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     [_locationManager startUpdatingLocation];
     
     _start.enabled = NO;
     _end.enabled = NO;
+    
+    
+    //google maps stuff
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:37.33182
+                                                            longitude:-122.03118
+                                                                 zoom:10];
+    mapView_ = [GMSMapView mapWithFrame:_MapView.bounds camera:camera];
+    mapView_.myLocationEnabled = YES;
+    mapView_.mapType = kGMSTypeSatellite;
+    [_MapView addSubview:mapView_];
+    
     
 }
 
@@ -89,10 +108,45 @@
      didUpdateLocations:(NSArray *)locations {
 
     _varyingPoint = [locations lastObject];
+    
+    
+    CLLocationCoordinate2D position = CLLocationCoordinate2DMake( _varyingPoint.coordinate.latitude, _varyingPoint.coordinate.longitude);
+    
+    
+    
+    
+    
     if (_startPoint == nil) {
         _start.enabled = YES;
+        _startCoord2D = position;
+        _endCoord2D = position;
+        
+        GMSCoordinateBounds *bounds =
+        [[GMSCoordinateBounds alloc] initWithCoordinate:_startCoord2D coordinate:_endCoord2D];
+        
+        [mapView_ moveCamera:[GMSCameraUpdate fitBounds:bounds]];
+        
+        _startMarker.map = nil;
+        
+        _startMarker = [GMSMarker markerWithPosition:position];
+        _startMarker.title = @"Start";
+        _startMarker.icon = [GMSMarker markerImageWithColor:[UIColor greenColor]];
+        _startMarker.map = mapView_;
     }else if(_startPoint != nil && _endPoint == nil){
         _end.enabled = YES;
+        _endCoord2D = position;
+        
+        GMSCoordinateBounds *bounds =
+        [[GMSCoordinateBounds alloc] initWithCoordinate:_startCoord2D coordinate:_endCoord2D];
+        
+        [mapView_ moveCamera:[GMSCameraUpdate fitBounds:bounds]];
+        
+        _endMarker.map = nil;
+        
+        _endMarker = [GMSMarker markerWithPosition:position];
+        _endMarker.title = @"End";
+        _endMarker.icon = [GMSMarker markerImageWithColor:[UIColor redColor]];
+        _endMarker.map = mapView_;
     }
    
 }
