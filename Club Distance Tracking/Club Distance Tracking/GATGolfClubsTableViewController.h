@@ -10,7 +10,7 @@
 
 @interface GATGolfClubsTableViewController : UITableViewController <UIAlertViewDelegate>
 
-@property (strong, nonatomic) NSMutableArray *globalsArray;
+@property (strong, nonatomic) NSMutableArray *coreDataObjects;
 
 
 - (IBAction)addClub:(id)sender;

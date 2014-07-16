@@ -7,6 +7,13 @@
 //
 
 #import "GATGolfClubsTableViewController.h"
+#import "GATAppDelegate.h"
+
+static NSString * const kClubEntityName = @"Club";
+static NSString * const kClubNameKey = @"name";
+static NSString * const kClubCountKey = @"count";
+static NSString * const kClubTotalKey = @"total";
+
 
 @interface GATGolfClubsTableViewController ()
 
@@ -32,12 +39,22 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    NSString *filePath = [self dataFilePath];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-        _globalsArray = [[NSMutableArray alloc] initWithContentsOfFile:filePath];
-    }else{
-        _globalsArray = [[NSMutableArray alloc] init];
+//    NSString *filePath = [self dataFilePath];
+//    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+//        _globalsArray = [[NSMutableArray alloc] initWithContentsOfFile:filePath];
+//    }else{
+//        _globalsArray = [[NSMutableArray alloc] init];
+//    }
+    
+    GATAppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:kClubEntityName];
+    NSError *error;
+    _coreDataObjects = [[context executeFetchRequest:request error:&error] mutableCopy];
+    if (_coreDataObjects == nil) {
+        NSLog(@"returned empty array");
     }
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -59,7 +76,7 @@
 {
 
     // Return the number of rows in the section.
-    return [_globalsArray count];
+    return [_coreDataObjects count];
 }
 
 
@@ -68,10 +85,10 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ClubCell" forIndexPath:indexPath];
     
     // Configure the cell...
-    cell.textLabel.text = [_globalsArray[indexPath.row] objectForKey:@"Club"];
+    cell.textLabel.text = [_coreDataObjects[indexPath.row] valueForKey:kClubNameKey];
     
-    NSNumber *total = [_globalsArray[indexPath.row] objectForKey:@"Total"];
-    NSNumber *count = [_globalsArray[indexPath.row] objectForKey:@"Count"];
+    NSNumber *total = [_coreDataObjects[indexPath.row] valueForKey:kClubTotalKey];
+    NSNumber *count = [_coreDataObjects[indexPath.row] valueForKey:kClubCountKey];
     double average;
     if ([count doubleValue] == 0) {
         average = 0;
@@ -94,17 +111,8 @@
 //code to save plist file if application is put into background
 - (void)applicationWillResignActive:(NSNotification *)notification
 {
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"Clubs" ofType:@"plist"];
-    [_globalsArray writeToFile:filePath atomically:YES];
-}
-
-
-- (NSString *)dataFilePath
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(
-                                                         NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    return [documentsDirectory stringByAppendingPathComponent:@"Clubs.plist"];
+    //NSString *filePath = [[NSBundle mainBundle] pathForResource:@"Clubs" ofType:@"plist"];
+    //[_globalsArray writeToFile:filePath atomically:YES];
 }
 
 
@@ -156,11 +164,10 @@
     // Pass the selected object to the new view controller.
     
     UIViewController *destination = segue.destinationViewController;
-    SEL selector = NSSelectorFromString(@"setChosenIndex:");
+    SEL selector = NSSelectorFromString(@"setClubName:");
     if ([destination respondsToSelector:selector]) {
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-        NSNumber *tmp =[[NSNumber alloc] initWithInteger:indexPath.row];
-        [destination setValue:tmp forKey:@"chosenIndex"];
+        [destination setValue:[_coreDataObjects[indexPath.row] valueForKey:kClubNameKey] forKey:@"clubName"];
     }
 }
 
@@ -168,15 +175,39 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 0) {
-        NSMutableDictionary *club = [[NSMutableDictionary alloc] init];
-        [club setValue:[[alertView textFieldAtIndex:0] text] forKey:@"Club"];
-        [club setValue:0 forKey:@"Total"];
-        [club setValue:0 forKey:@"Count"];
-        [_globalsArray addObject:club];
-        NSString *filePath = [self dataFilePath];
-        [_globalsArray writeToFile:filePath atomically:YES];
-        [self.tableView reloadData];
+    if (buttonIndex == 1) {
+        
+        //get application delegate to retrieve managed object context
+        GATAppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+        NSManagedObjectContext *context = [appDelegate managedObjectContext];
+        NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:kClubEntityName];
+        //set predicate to look for existing value in database
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", kClubNameKey, [[alertView textFieldAtIndex:0] text]];
+        [request setPredicate:pred];
+        
+        
+        NSError *error;
+        
+        NSArray *objects = [context executeFetchRequest:request error:&error];
+        
+        //if no objects are returned then value supplied must not exist
+        if ([objects count] == 0) {
+            
+            NSManagedObject *newClub = [NSEntityDescription insertNewObjectForEntityForName:kClubEntityName inManagedObjectContext:context];
+            [newClub setValue:[[alertView textFieldAtIndex:0] text] forKey:kClubNameKey];
+            [newClub setValue:0 forKey:kClubCountKey];
+            [newClub setValue:0 forKey:kClubTotalKey];
+            [_coreDataObjects addObject:newClub];
+            [appDelegate saveContext];
+            [self.tableView reloadData];
+            
+            
+            NSLog(@"no object exists");
+        }else{
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Already Exists" message:[NSString stringWithFormat:@"%@ Already Exists",[[alertView textFieldAtIndex:0] text]] delegate:self cancelButtonTitle:@"Done" otherButtonTitles:nil];
+            [alert show];
+        }
+    
         
     }
     
@@ -186,7 +217,7 @@
 
 - (IBAction)addClub:(id)sender {
     
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Add Club" message:@"Enter Club You Would Like to Add" delegate:self cancelButtonTitle:@"Add" otherButtonTitles:@"Cancel",nil];
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Add Club" message:@"Enter Club You Would Like to Add" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add",nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [alert show];
 }

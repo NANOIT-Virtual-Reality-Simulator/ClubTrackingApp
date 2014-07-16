@@ -7,6 +7,12 @@
 //
 
 #import "GATClubDetailViewController.h"
+#import "GATAppDelegate.h"
+
+static NSString * const kClubEntityName = @"Club";
+static NSString * const kClubNameKey = @"name";
+static NSString * const kClubCountKey = @"count";
+static NSString * const kClubTotalKey = @"total";
 
 
 
@@ -35,10 +41,29 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _globalsArray = [[NSArray alloc] initWithContentsOfFile:[self dataFilePath]];
-    _club.text = [_globalsArray[[_chosenIndex integerValue]] objectForKey:@"Club"];
-    NSNumber *total = [_globalsArray[[_chosenIndex integerValue]] objectForKey:@"Total"];
-    NSNumber *count = [_globalsArray[[_chosenIndex integerValue]] objectForKey:@"Count"];
+
+    
+    GATAppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:kClubEntityName];
+    
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(%K = %@)", kClubNameKey, _clubName];
+    [request setPredicate:pred];
+    
+    
+    NSError *error;
+    NSArray *coreDataObjects = [[context executeFetchRequest:request error:&error] mutableCopy];
+    if (_coreDataObject == nil) {
+        NSLog(@"returned empty array");
+    }
+    
+    _coreDataObject= coreDataObjects[0];
+    
+    
+    _club.text = [_coreDataObject valueForKey:kClubNameKey];
+    NSNumber *total = [_coreDataObject valueForKey:kClubTotalKey];
+    NSNumber *count = [_coreDataObject valueForKey:kClubCountKey];
+    
     double average;
     if ([count doubleValue] == 0) {
         average = 0;
@@ -55,12 +80,7 @@
     _distance.text = [doubleValueWithMaxTwoDecimalPlaces stringFromNumber:[NSNumber numberWithDouble:average]];
     [_start setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
     [_end setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
-//    _start.layer.borderWidth = 1.0f;
-//    _start.layer.borderColor = [[UIColor greenColor] CGColor];
-//    _start.layer.cornerRadius = 8;
-//    _end.layer.borderWidth = 1.0f;
-//    _end.layer.borderColor = [[UIColor redColor] CGColor];
-//    _end.layer.cornerRadius = 8;
+
     
     self.locationManager = [[CLLocationManager alloc] init];
     _locationManager.delegate = self;
@@ -89,23 +109,12 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 
 
 #pragma mark -
 #pragma mark CLLocationManagerDelegate Methods
-- (void)locationManager:(CLLocationManager *)manager
-     didUpdateLocations:(NSArray *)locations {
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
 
     _varyingPoint = [locations lastObject];
     
@@ -151,8 +160,7 @@
    
 }
 
-- (void)locationManager:(CLLocationManager *)manager
-       didFailWithError:(NSError *)error {
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
     NSString *errorType = (error.code == kCLErrorDenied) ?
     @"Access Denied" : @"Unknown Error";
     UIAlertView *alert = [[UIAlertView alloc]
@@ -177,7 +185,7 @@
     _end.enabled = NO;
     _distanceFromStart = [_endPoint distanceFromLocation:_startPoint];
     _attemptedDistance.text = [NSString stringWithFormat:@"%gyd", _distanceFromStart * 1.0936];
-    NSString *titleString = [NSString stringWithFormat:@"%@ Was Hit %@ Yards", _club.text = [_globalsArray[[_chosenIndex integerValue]] objectForKey:@"Club"], _attemptedDistance.text];
+    NSString *titleString = [NSString stringWithFormat:@"%@ Was Hit %@ Yards", [_coreDataObject valueForKey:kClubNameKey] , _attemptedDistance.text];
     
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:titleString
@@ -191,17 +199,17 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0) {
-        NSNumber *currentTotal = [_globalsArray[[_chosenIndex integerValue]] objectForKey:@"Total"];
+        NSNumber *currentTotal = [_coreDataObject valueForKey:kClubTotalKey];
         
         NSNumber *newTotal =  [NSNumber numberWithDouble:[currentTotal doubleValue] +  (_distanceFromStart * 1.0936)];
-        [_globalsArray[[_chosenIndex integerValue]] setObject:newTotal forKey:@"Total"];
+        [_coreDataObject setValue:newTotal forKey:kClubTotalKey];
         
-        NSNumber *currentCount = [_globalsArray[[_chosenIndex integerValue]] objectForKey:@"Count"];
+        NSNumber *currentCount = [_coreDataObject valueForKey:kClubCountKey];
         NSNumber *newCount = [NSNumber numberWithInt:[currentCount intValue] + 1];
-        [_globalsArray[[_chosenIndex integerValue]] setObject:newCount forKey:@"Count"];
+        [_coreDataObject setValue:newCount forKey:kClubCountKey];
         
-        NSNumber *total = [_globalsArray[[_chosenIndex integerValue]] objectForKey:@"Total"];
-        NSNumber *count = [_globalsArray[[_chosenIndex integerValue]] objectForKey:@"Count"];
+        NSNumber *total = [_coreDataObject valueForKey:kClubTotalKey];
+        NSNumber *count = [_coreDataObject valueForKey:kClubCountKey];
         double average;
         if ([count doubleValue] == 0) {
             average = 0;
@@ -219,25 +227,12 @@
         
         
         //save new data to disk
-        NSString *filePath = [self dataFilePath];
-        [_globalsArray writeToFile:filePath atomically:YES];
+        GATAppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+        [appDelegate saveContext];
     }
     
 }
 
-//code to save plist file if application is put into background
-- (void)applicationWillResignActive:(NSNotification *)notification
-{
-    NSString *filePath = [self dataFilePath];
-    [_globalsArray writeToFile:filePath atomically:YES];
-}
 
 
-- (NSString *)dataFilePath
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(
-                                                         NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    return [documentsDirectory stringByAppendingPathComponent:@"Clubs.plist"];
-}
 @end

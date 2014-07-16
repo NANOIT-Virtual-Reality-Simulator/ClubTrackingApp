@@ -12,8 +12,8 @@
 
 @interface GATClubDetailViewController : UIViewController <CLLocationManagerDelegate, UIAlertViewDelegate>
 
-@property (strong, nonatomic) NSArray *globalsArray;
-@property (strong, nonatomic) NSNumber *chosenIndex;
+@property (strong, nonatomic) NSManagedObject *coreDataObject;
+@property (strong, nonatomic) NSString *clubName;
 @property (weak, nonatomic) IBOutlet UILabel *club;
 @property (weak, nonatomic) IBOutlet UILabel *distance;
 @property (weak, nonatomic) IBOutlet UILabel *attemptedDistance;
