@@ -41,6 +41,8 @@ static NSString * const kClubTotalKey = @"total";
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    
 
     
     GATAppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
@@ -85,6 +87,9 @@ static NSString * const kClubTotalKey = @"total";
     self.locationManager = [[CLLocationManager alloc] init];
     _locationManager.delegate = self;
     _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    
+    [_locationManager requestAlwaysAuthorization];
+    
     [_locationManager startUpdatingLocation];
     
     _start.enabled = NO;
